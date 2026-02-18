@@ -1,3 +1,11 @@
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#   "marimo",
+#   "polars",
+# ]
+# ///
+
 import marimo
 
 __generated_with = "0.19.11"
@@ -56,6 +64,11 @@ def _(about, mo):
     - view all results at once or in accordion-fold display
         """).callout(kind="info")
     credits    
+    return
+
+
+@app.cell
+def _():
     return
 
 
