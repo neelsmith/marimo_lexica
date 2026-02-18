@@ -28,14 +28,20 @@ def _(about, mo):
 
     ### Motivation
 
-    This addition to the number of programs working with a digital text of Lewis and Short's public-domain *Latin Dictionary* is a marimo notebook written in Python. It can be run locally without an internet connection, or exported as HTML-WASM and dropped in to any web server without any backend requirements or configuration required. These options can sometimes be a convenient alternative to [Christopher Blackwell's app](https://folio3.furman.edu/ls/index.html) that inspired it.
+    This addition to the number of  programs available for working with a digital text of Lewis and Short's public-domain *Latin Dictionary* is a marimo notebook written in Python. It can be run locally without an internet connection, or exported as HTML-WASM and dropped in to any web server without any further configuration or backend requirements. These options can sometimes be a convenient alternative to the [Lewis-short app by Christopher Blackwell](https://folio3.furman.edu/ls/index.html) that inspired this notebook.
 
     ### Credits and data sources   
 
     In the 20th century, the Perseus project digitized the complete text of Lewis and Short in TEI-compliant XML. The full TEI editions can be freely downloaded as part of the [Perseus Greek and Latin texts package](https://www.perseus.tufts.edu/hopper/opensource/download).
 
 
-    Christopher Blackwell created an edition that extracts essential information from the TEI text and formats articles in Markdown. His markdown lexicon is freely available on github under the terms of a Creative Commons license ([here](https://github.com/Eumaeus/cex_lewis_and_short).
+    Christopher Blackwell created an edition that extracts essential information from the TEI text and formats articles in Markdown. His markdown lexicon is freely available on github under the terms of a Creative Commons license [here](https://github.com/Eumaeus/cex_lewis_and_short).
+
+
+    ### Source
+
+    See [this github repository](https://github.com/neelsmith/marimo_lewis-short).
+
 
     ### Changelog
 
@@ -155,7 +161,7 @@ def _(mo):
 
 @app.cell
 def _(mo):
-    search_in = mo.ui.dropdown(["headword", "article", "all"],value="headword")
+    search_in = mo.ui.dropdown(["headword", "article"],value="headword")
     return (search_in,)
 
 
@@ -194,6 +200,7 @@ def _():
 @app.cell
 def _(colnames, search, search_in):
     def formatresults(results):
+        """Compose a markdown display of the results dataframe."""
         if results.is_empty():
             return f"*No matches for* `{search.value}` *in column* `{colnames[search_in.value]}`."
 
@@ -202,7 +209,7 @@ def _(colnames, search, search_in):
             lemma = row.get("key", "")
             urn = row.get("urn", "")
             text = row.get("entry", "")
-            formatted.append(f"## *{lemma}*\n\n`{urn}`\n\n{text}")
+            formatted.append(f"### *{lemma}*\n\n`{urn}`\n\n{text}")
 
         return "\n\n".join(formatted)
 
@@ -212,6 +219,7 @@ def _(colnames, search, search_in):
 @app.cell
 def _(mo, results):
     def formatdict(reslts):
+        """Create a dictionary of headwords to formatted article text."""
         if results.is_empty():
             return dict()
 
@@ -293,9 +301,9 @@ def _(mo, show_computation):
 
 
 @app.cell
-def _(Path, pl):
+def _(mo, pl):
     def load_ls():
-        datadir = Path.cwd() / "notebooks" / "public"
+        datadir = mo.notebook_location() / "public"
         lsfile = str(datadir / "ls-articles.cex")
         return pl.read_csv(lsfile, separator="|").with_columns(
             pl.concat_str([pl.col("key"), pl.col("entry")], separator=" ").alias("all")
@@ -328,7 +336,7 @@ def _():
     from pathlib import Path
     import polars as pl
 
-    return Path, pl
+    return (pl,)
 
 
 if __name__ == "__main__":
