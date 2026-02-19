@@ -4,24 +4,31 @@
 
 ![](./nb.gif)
 
-## Ways to use it
-
-**From a web browser**:
-
-- it's hosted on github [here](https://neelsmith.github.io/marimo_lewis-short/)
+## Use it in a web browser
 
 
-**Run it locally (no internet connection required)**:
 
-You need a python environment with marimo installed (e.g., `pip install marimo`). Use either
+It's hosted on github [here](https://neelsmith.github.io/marimo_lewis-short/)
 
-`marimo edit NOTEBOOKFILE.py` (for edit mode)
+
+## Run it locally (no internet connection required)
+
+
+
+You need a python environment with marimo installed (e.g., `pip install marimo`). If you have [`uv` installed](https://docs.astral.sh/uv/getting-started/installation/), you can run marimo notebooks with the `--sandbox` flag and `uv` will automatically manage any dependencies your notebook requires.
+
+
+Use either
+
+`marimo edit --sandbox NOTEBOOKFILE.py` (for edit mode)
 
 or 
 
-`marimo run NOTEBOOKFILE.py` (for app mode)
+`marimo run --sandbox  NOTEBOOKFILE.py` (for app mode)
 
-**Hosting it on your own website**:
+## Hosting it on your own website
+
+Export the notebook as HTML-WASM, and provide a directory name for output. The notebook page will be `index.html` in that directory.
 
 `marimo export html-wasm NOTEBOOKEFILE.py -o OUTPUT_FILE_OR_DIRECTORY --mode "run"`
 
